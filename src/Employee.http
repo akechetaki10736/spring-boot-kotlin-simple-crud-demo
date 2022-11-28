@@ -1,0 +1,27 @@
+### Send POST request with json body
+POST http://localhost:8081/employees
+Content-Type: application/json
+
+{
+  "name": "Ethan, Wu",
+  "age": 32,
+  "language": "Java"
+}
+
+### GET request with parameter
+GET http://localhost:8081/employees/2
+
+
+###
+PUT http://localhost:8081/employees
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Keith, Kuo",
+  "age": 42,
+  "language": "Java"
+}
+
+###
+DELETE http://localhost:8081/employees/2
