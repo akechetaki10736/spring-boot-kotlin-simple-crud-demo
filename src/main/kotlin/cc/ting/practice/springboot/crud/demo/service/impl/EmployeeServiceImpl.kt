@@ -31,6 +31,13 @@ class EmployeeServiceImpl(
                 employeeDao.save(this).toDto()
             }
 
+    override fun modifyEmployeeWithAge(employeeDto: EmployeeDto): EmployeeDto =
+        employeeDao.findById(employeeDto.id!!)
+            .orElseThrow { RuntimeException() }
+            .run {
+                this.age = employeeDto.age
+                employeeDao.save(this).toDto()
+            }
 
     override fun removeEmployeeById(id: Long) = employeeDao.deleteById(id)
 

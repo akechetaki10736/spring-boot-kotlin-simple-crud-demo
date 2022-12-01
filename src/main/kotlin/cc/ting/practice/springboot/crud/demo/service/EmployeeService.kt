@@ -8,6 +8,7 @@ interface EmployeeService {
     fun queryEmployeeById(id: Long): EmployeeDto
 
     fun modifyEmployee(employeeDto: EmployeeDto): EmployeeDto
+    fun modifyEmployeeWithAge(employeeDto: EmployeeDto): EmployeeDto
 
     fun removeEmployeeById(id: Long)
 

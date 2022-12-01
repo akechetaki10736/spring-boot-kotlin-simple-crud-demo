@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### GET request with parameter
-GET http://localhost:8081/employees/2
+GET http://localhost:8081/employees/3
 
 
 ###
@@ -21,6 +21,17 @@ Content-Type: application/json
   "name": "Keith, Kuo",
   "age": 42,
   "language": "Java"
+}
+
+###
+PATCH http://localhost:8081/employees/age
+Content-Type: application/json
+
+{
+  "id": 3,
+  "age": 200,
+  "language": "Java",
+  "name": "Keith, Kuo"
 }
 
 ###
