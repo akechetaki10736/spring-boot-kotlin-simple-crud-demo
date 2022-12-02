@@ -7,14 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class SpringBootKotlinSimpleCrudDemoApplicationTests {
 
-    @Autowired
-    lateinit var springBootKotlinSimpleCrudDemoApplication: SpringBootKotlinSimpleCrudDemoApplication
+
 
     @Test
     fun contextLoads() {
-        println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        println(springBootKotlinSimpleCrudDemoApplication)
-        println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     }
 
 }

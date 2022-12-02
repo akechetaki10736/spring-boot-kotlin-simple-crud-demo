@@ -29,7 +29,7 @@ class EmployeeServiceImpl(
         employeeDao.findByLastName(lastName, pageable)
             .map { it.toDto() }
 
-    override fun modifyEmployee(employeeDto: EmployeeDto): EmployeeDto =
+    override fun modifyEmployee(employeeDto: EmployeeDto) =
         employeeDao.findById(employeeDto.id!!)
             .orElseThrow { RuntimeException() }
             .run {
@@ -38,6 +38,8 @@ class EmployeeServiceImpl(
                 this.lastName = names.last().trim()
                 this.age = employeeDto.age
                 this.language = employeeDto.language
+                this.balance = employeeDto.balance
+                this.gender = employeeDto.gender
                 employeeDao.save(this).toDto()
             }
 
