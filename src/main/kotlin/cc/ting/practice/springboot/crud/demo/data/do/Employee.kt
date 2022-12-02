@@ -35,7 +35,7 @@ data class Employee(
     var balance: BigDecimal,
 
     @Column
-    var createTime: LocalDateTime
+    var createTime: LocalDateTime?
 
 ) {
     fun toDto(): EmployeeDto = EmployeeDto(

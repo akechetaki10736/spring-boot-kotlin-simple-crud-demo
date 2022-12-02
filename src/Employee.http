@@ -3,14 +3,22 @@ POST http://localhost:8081/employees
 Content-Type: application/json
 
 {
-  "name": "Ethan, Wu",
-  "age": 32,
-  "language": "Java"
+  "name": "Ting, Ki",
+  "age": 26,
+  "language": "Solidity",
+  "balance": 1000.0,
+  "gender": "Male"
+
 }
 
 ### GET request with parameter
 GET http://localhost:8081/employees/3
 
+### GET request with parameter
+GET http://localhost:8081/employees/firstName/Ting
+
+### GET request with parameter
+GET http://localhost:8081/employees?lastName=Ki&page=1&size=3&column=id&direction=DESC
 
 ###
 PUT http://localhost:8081/employees
@@ -24,14 +32,12 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8081/employees/age
+PATCH http://localhost:8081/employees
 Content-Type: application/json
 
 {
-  "id": 3,
   "age": 200,
-  "language": "Java",
-  "name": "Keith, Kuo"
+  "id": 3
 }
 
 ###

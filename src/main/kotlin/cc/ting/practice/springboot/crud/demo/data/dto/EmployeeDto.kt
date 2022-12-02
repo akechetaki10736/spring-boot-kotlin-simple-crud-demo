@@ -12,7 +12,7 @@ data class EmployeeDto(
     val language: String,
     val gender: Gender,
     val balance: BigDecimal,
-    val createTime: LocalDateTime
+    val createTime: LocalDateTime?
 ) {
     fun toDo(): Employee =
         run {

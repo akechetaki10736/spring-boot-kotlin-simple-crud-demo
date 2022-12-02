@@ -1,7 +1,11 @@
 package cc.ting.practice.springboot.crud.demo.web.controller
 
 import cc.ting.practice.springboot.crud.demo.data.dto.EmployeeDto
+import cc.ting.practice.springboot.crud.demo.data.vo.EmployeeVo
 import cc.ting.practice.springboot.crud.demo.service.EmployeeService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -24,12 +28,25 @@ class EmployeeController(
 
     @GetMapping("/{id}")
     fun queryEmployeeById(@PathVariable id: Long): EmployeeDto = employeeService.queryEmployeeById(id)
+    
+    @GetMapping("/firstName/{firstName}")
+    fun queryEmployeeByFirstName(@PathVariable firstName: String): List<EmployeeDto> = employeeService.queryEmployeeByFirstName(firstName)
 
+    @GetMapping
+    fun queryEmployeeByLastName(
+        @RequestParam lastName: String,
+        @RequestParam page: Int,
+        @RequestParam size: Int,
+        @RequestParam column: String,
+        @RequestParam direction: Sort.Direction
+    ): Page<EmployeeDto> = employeeService.queryEmployeeByLastName(lastName, PageRequest.of(page, size, direction, column))
+    
+    
     @PutMapping
     fun modifyEmployee(@RequestBody employeeDto: EmployeeDto): EmployeeDto = employeeService.modifyEmployee(employeeDto)
 
-    @PatchMapping("/age")
-    fun modifyEmployeeWithAge(@RequestBody employeeDto: EmployeeDto) = employeeService.modifyEmployeeWithAge(employeeDto)
+    @PatchMapping
+    fun modifyEmployeeAgeById(@RequestBody employeeVo: EmployeeVo) = employeeService.modifyEmployeeAgeById(employeeVo.age, employeeVo.id)
 
     @DeleteMapping("/{id}")
     fun removeEmployeeById(@PathVariable id: Long) = employeeService.removeEmployeeById(id)

@@ -3,7 +3,10 @@ package cc.ting.practice.springboot.crud.demo.service.impl
 import cc.ting.practice.springboot.crud.demo.data.dao.EmployeeDao
 import cc.ting.practice.springboot.crud.demo.data.dto.EmployeeDto
 import cc.ting.practice.springboot.crud.demo.service.EmployeeService
+import jakarta.transaction.Transactional
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
+import org.springframework.data.domain.Pageable
 
 @Service
 class EmployeeServiceImpl(
@@ -18,6 +21,13 @@ class EmployeeServiceImpl(
             .map { it.toDto() }
             .orElseThrow { RuntimeException() }
 
+    override fun queryEmployeeByFirstName(firstName: String): List<EmployeeDto> =
+        employeeDao.findByFirstNameOrderByIdDesc(firstName)
+            .map { it.toDto() }
+
+    override fun queryEmployeeByLastName(lastName: String, pageable: Pageable): Page<EmployeeDto> =
+        employeeDao.findByLastName(lastName, pageable)
+            .map { it.toDto() }
 
     override fun modifyEmployee(employeeDto: EmployeeDto): EmployeeDto =
         employeeDao.findById(employeeDto.id!!)
@@ -38,6 +48,9 @@ class EmployeeServiceImpl(
                 this.age = employeeDto.age
                 employeeDao.save(this).toDto()
             }
+
+    @Transactional
+    override fun modifyEmployeeAgeById(age: Int, id: Long): Unit = employeeDao.updateEmployeeAgeById(age, id)
 
     override fun removeEmployeeById(id: Long) = employeeDao.deleteById(id)
 
