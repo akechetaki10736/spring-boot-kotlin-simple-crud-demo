@@ -3,11 +3,14 @@ package cc.ting.practice.springboot.crud.demo.web.controller
 import cc.ting.practice.springboot.crud.demo.data.dto.EmployeeDto
 import cc.ting.practice.springboot.crud.demo.data.enu.Gender
 import cc.ting.practice.springboot.crud.demo.data.vo.EmployeeVo
+import cc.ting.practice.springboot.crud.demo.extension.Logging
 import cc.ting.practice.springboot.crud.demo.service.EmployeeService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+
 import org.mockito.BDDMockito
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -20,16 +23,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.bodyToMono
 import java.math.BigDecimal
 
 @WebMvcTest(EmployeeController::class)
-class EmployeeControllerTest {
+class EmployeeControllerTest: Logging {
+
 
     @MockBean
     lateinit var employeeService: EmployeeService
 
     @Autowired
     lateinit var mockMvc: MockMvc
+
+    private val webClient = WebClient.builder().build()
 
     private val objectMapper = ObjectMapper()
 
@@ -49,6 +57,19 @@ class EmployeeControllerTest {
     }
 
     @Test
+    fun addEmployeeWithWebClient() {
+        val addEmployee = webClient.post()
+            .uri("http://localhost:8081/employees")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(EmployeeDto(null, "Ting, Ki", 26, "Kotlin", Gender.Male, BigDecimal(1000), null))
+            .retrieve()
+            .bodyToMono(EmployeeDto::class.java)
+            .block()
+
+        logger().info("{}", addEmployee)
+    }
+
+    @Test
     fun queryEmployeeById() {
         val employeeDto = EmployeeDto(1, "Ting, Ki", 26, "Kotlin", Gender.Male, BigDecimal(1000), null)
         BDDMockito.given(employeeService.queryEmployeeById(1)).willReturn(employeeDto)
@@ -60,6 +81,17 @@ class EmployeeControllerTest {
             .andDo(print())
             .andExpect(status().isOk)
             .andExpect(content().string(objectMapper.writeValueAsString(employeeDto)))
+    }
+
+    @Test
+    fun queryEmployeeByIdWithWebClient() {
+        val employeeDto = webClient.get()
+            .uri("http://localhost:8081/employees/1")
+            .retrieve()
+            .bodyToMono(EmployeeDto::class.java)
+            .block()
+
+        logger().info("{}", employeeDto)
     }
 
     @Test
